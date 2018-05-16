@@ -17,7 +17,8 @@
 use {bits, der, digest, error, pkcs8};
 use rand;
 use std;
-use super::{blinding, bigint, bigint::Prime, N};
+use super::{blinding, bigint, N};
+use super::bigint::Prime;
 use arithmetic::montgomery::{R, RR, RRR};
 use untrusted;
 
@@ -518,7 +519,7 @@ impl RSASigningState {
             return Err(error::Unspecified);
         }
 
-        let RSASigningState { key_pair: key, blinding } = self;
+        let &mut RSASigningState { key_pair: ref mut key, ref mut blinding } = self;
 
         let m_hash = digest::digest(padding_alg.digest_alg(), msg);
         padding_alg.encode(&m_hash, signature, mod_bits, rng)?;
