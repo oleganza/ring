@@ -266,7 +266,7 @@ impl TestCase {
     /// Like `consume_string()` except it returns `None` if the test case
     /// doesn't have the attribute.
     pub fn consume_optional_string(&mut self, key: &str) -> Option<String> {
-        for (name, value, consumed) in
+        for &mut (ref mut name, ref mut value, ref mut consumed) in
                 &mut self.attributes {
             if key == name {
                 if *consumed {
@@ -392,7 +392,7 @@ fn parse_test_case(current_section: &mut String, lines: &mut FileLines)
         };
 
         if cfg!(feature = "test_logging") {
-            if let Some(text) = &line {
+            if let &Some(ref text) = &line {
                 println!("Line: {}", text);
             }
         }

@@ -63,7 +63,7 @@ impl SigningContext {
     }
 
     pub fn update(&mut self, mut input: &[u8]) {
-        let SigningContext { opaque, buf, buf_used, func, .. } = self;
+        let &mut SigningContext { ref mut opaque, ref mut buf, ref mut buf_used, ref mut func, .. } = self;
         if *buf_used != 0 {
             let todo = core::cmp::min(input.len(), BLOCK_LEN - *buf_used);
 
@@ -92,7 +92,7 @@ impl SigningContext {
     }
 
     pub fn sign(mut self, tag_out: &mut Tag) {
-        let SigningContext { opaque, nonce, buf, buf_used, func } = &mut self;
+        let &mut SigningContext { ref mut opaque, ref mut nonce, ref mut buf, ref mut buf_used, ref mut func } = &mut self;
         if *buf_used != 0 {
             buf[*buf_used] = 1;
             for byte in &mut buf[(*buf_used + 1)..] {
